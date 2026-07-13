@@ -7,6 +7,8 @@
 - macOS `26.5.1`，Apple Silicon `arm64`。
 - Godot `4.6.3 stable`。
 - 与编辑器匹配的 `4.6.3.stable` 导出模板。
+- Inochi Creator `0.8.4` 和 Live2D Cubism Editor `5.3.02` 已安装，可用于对照验证，但没有被选为生产依赖。
+- FFmpeg、ImageMagick、Pillow、NumPy 和 scikit-image，可用于透明动画导出与自动差分检查。
 - Git 与 GitHub CLI，仓库已公开。
 - Rosetta 已安装，可做 x86_64 兼容性初步验证。
 
@@ -17,7 +19,8 @@
 - 完整 Xcode；当前只有 Command Line Tools。
 - Apple Developer Program 账号对应的 `Developer ID Application` 签名身份。
 - 最终角色的可绑定分层母版。
-- Live2D、Spine 或纯 Godot 原生绑定路线的最终决定。
+- Krita 与 Blender 当前未安装。
+- `nijigenerate` 测试版尚未安装；它必须先得到用户同意，并在隔离目录中只操作临时素材副本。
 
 因此现在可以开发和制作本机测试包，但还不能发布普通用户双击即可无警告打开的正式 DMG。
 
@@ -31,6 +34,8 @@
 | 架构 | Universal 2：`arm64 + x86_64` |
 | 发行渠道 | GitHub Releases 的签名、公证 DMG |
 | 开发语言 | GDScript 为主；系统桥接使用 Swift/Objective-C 或 GDExtension |
+| 角色制作 | 先验证 `nijigenerate MCP`；失败时回退 Blender/Godot NativeRig |
+| 角色运行 | Godot 分层与同源烘焙序列为安全基线；实时参数运行时另设技术门 |
 | 本地密钥 | macOS Keychain |
 | 开机启动 | `SMAppService`，用户主动开启 |
 | 配置与记忆 | Application Support 中的本地数据库；密钥不进数据库 |
@@ -49,7 +54,7 @@
 - 左右辫子及适合物理摆动的分段。
 - 关节和遮挡处被成品图挡住的隐藏区域补画。
 
-所有图层使用同一画布、原点、缩放和命名规范。必须保存 PSD/PSB 或等价分层源文件，以及 Live2D `.cmo3`、Spine `.spine` 或 Godot 绑定场景，不能只保留导出结果。
+所有图层使用同一画布、原点、缩放和命名规范。必须保存 Krita `.kra`、PSD/PSB 或等价分层源文件，以及选定工具的可编辑绑定工程（例如 `.inx`、`.blend` 或 Godot 场景），不能只保留导出 PNG。
 
 ## macOS 窗口前提
 

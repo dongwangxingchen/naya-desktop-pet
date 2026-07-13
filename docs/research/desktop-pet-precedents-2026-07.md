@@ -6,20 +6,23 @@
 
 Godot 4.6 可以继续作为“小纳雅桌宠”的主程序。它已经具备透明窗口、置顶、多屏、2D 骨骼、动画状态机和完整 UI 能力。旧版失败的根因不是 Godot，而是使用了彼此不一致的整身 PNG 帧，并且没有保留可继续编辑的角色绑定源文件。
 
+用户已经确认不购买 Live2D、Spine，也不聘请专业绑定师。因此 Live2D、Spine 只保留为调研对照，不进入必需依赖。Godot 作为桌宠主程序已经确定，但角色作者工具和实时运行时要分别通过技术门，不能过早锁死为纯手工 NativeRig。
+
 重置版应采用：
 
 ```text
 Godot 桌宠外壳
 ├── 窗口、多屏、气泡、面板与状态机
 ├── CharacterRenderer 角色渲染接口
-│   ├── NativeRig：Godot 原生分层/骨骼方案
-│   └── CubismRig：Live2D 技术验证方案
+│   ├── LayeredRig：固定分层实时眨眼、视线与嘴型
+│   ├── BakedRig：同一绑定工程导出的复杂透明动作
+│   └── ParametricRig：实时参数运行时通过技术门后再接入
 ├── 对话、上下文与本地记忆
 ├── macOS 原生桥：Keychain、开机启动、权限状态
 └── 按需下载的电脑控制辅助组件
 ```
 
-第一步不是制作几十个动作，而是让同一份角色母版在两种候选渲染路线中完成眨眼、视线、呼吸、辫子摆动和换装参数验证。技术样机不过关，就不能扩大素材生产。
+第一步不是制作几十个动作，也不是马上拆正式角色，而是用临时脸部测试件验证绑定编辑器、保存重开、透明导出和 Godot 运行路径。技术样机不过关，就不能扩大素材生产。
 
 ## 代表性前例
 
@@ -103,7 +106,25 @@ Godot 桌宠外壳
 
 来源：[Godot 2D skeletons](https://docs.godotengine.org/en/4.6/tutorials/animation/2d_skeletons.html)。
 
-### B. Live2D Cubism + GDCubism
+### B. `nijigenerate MCP` + Godot
+
+优点：
+
+- BSD-2-Clause，免费开源，是基于 Inochi2D 技术继续发展的参数化 2D 角色编辑器。
+- 内置 MCP 可直接导入 KRA/PSD、建立节点和网格、创建参数、写入逐顶点变形与 TRS 绑定、截图检查、保存和透明导出。
+- Codex 可以通过结构化命令工作，不必把复杂绑定退化为坐标式 GUI 点击。
+
+风险：
+
+- MCP 目前只在 1.0 测试版提供，官方明确不保证稳定，必须操作副本并频繁另存。
+- `nijilive/nicxlive` 没有现成 Godot 插件；实时接入需要单独开发和验证 GDExtension。
+- 作者工具小样通过不等于运行时已经通过。
+
+适用方式：先做临时脸部小样；第一版仍以 Godot 固定分层和同源烘焙序列作为安全运行基线。
+
+来源：[nijigenerate](https://github.com/nijigenerate/nijigenerate)、[MCP API](https://github.com/nijigenerate/nijigenerate/blob/main/doc/mcp_api.md)、[nicxlive](https://github.com/nijigenerate/nicxlive)。详细评估见[免费角色绑定工具链调研](rigging-toolchain-options-2026-07.md)。
+
+### C. Live2D Cubism + GDCubism
 
 优点：
 
@@ -116,11 +137,11 @@ Godot 桌宠外壳
 - GDCubism 是非官方扩展，没有可直接依赖的成熟二进制发行流程，需要自行构建并固定版本。
 - 存在编辑器崩溃等开放 Issue，必须先在 Godot 4.6.3/macOS 真机验证。
 - 眨眼、视线和换装能否稳定工作取决于模型参数规范；普通 Motion 可能覆盖服装参数，需要单独的参数持有策略。
-- Live2D Framework 与 Core 使用不同许可证；达到 Live2D 规定的商业营收条件后还需发行许可。
+- Live2D Framework 与 Core 使用不同许可证；个人或小规模主体发布固定内置模型的普通应用通常免 SDK 发布费，但允许导入不定数量模型的 Expandable Application 需要预审和特殊合同。
 
 来源：[Cubism Native Framework](https://github.com/Live2D/CubismNativeFramework)、[GDCubism](https://github.com/MizunagiKB/gd_cubism)、[眨眼与视线 #17](https://github.com/MizunagiKB/gd_cubism/issues/17)、[换装参数 #91](https://github.com/MizunagiKB/gd_cubism/issues/91)、[崩溃 #164](https://github.com/MizunagiKB/gd_cubism/issues/164)。
 
-### C. Spine Godot Runtime
+### D. Spine Godot Runtime
 
 优点：
 
@@ -137,20 +158,20 @@ Godot 桌宠外壳
 
 ### 暂不采用
 
-- Inochi2D：方向合适且开源，但当前 macOS + Godot 4.6 的 GDExtension 存在直接 abort 的开放问题。
+- 官方 Inochi2D Godot 扩展：当前 macOS + Godot 4.6 的 GDExtension 存在直接 abort 的开放问题；这不等同于排除独立发展的 `nijigenerate` 作者工具。
 - Rive：运行时成熟，但没有官方 Godot 支持；现有 Godot 集成仍是小型 WIP 项目。
 - 独立生成的全身 AI 动画帧：无法保证身份、锚点和身体轮廓稳定，明确淘汰。
 
 来源：[Inochi2D #77](https://github.com/Inochi2D/inochi2d/issues/77)、[Rive Runtime](https://github.com/rive-app/rive-runtime)、[rive-godot](https://github.com/northernpaws/rive-godot)。
 
-## 推荐的技术验证
+## 确定采用的技术验证顺序
 
-先用同一份规范化角色母版制作两个小样：
+1. 用临时脸部测试件验证 `nijigenerate MCP` 的导入、网格、参数、绑定、截图、保存重开和透明导出。
+2. 用同一测试件建立 Godot 固定分层实时基线，并加载同源烘焙透明序列。
+3. `nijigenerate` 小样通过后，再评估 `nicxlive -> Godot GDExtension` 的最小实时参数闭环。
+4. 任一关键门失败，就转 Blender 自动化加 Godot NativeRig，不在正式角色素材上硬修测试工具。
 
-1. `NativeRig Spike`：Godot 原生分层节点，少量 Skeleton2D。
-2. `CubismRig Spike`：Live2D 模型通过固定版本 GDCubism 接入。
-
-两者必须用同一验收表：
+必须通过以下验收表：
 
 - 眨眼只改变眼部，身体像素与锚点不跳动。
 - 瞳孔先看向鼠标，头部稍晚、幅度更小地跟随。
@@ -160,7 +181,7 @@ Godot 桌宠外壳
 - 活跃动画限制在 30 FPS；进入静止后能降为低功耗模式。
 - 连续运行 8 小时后无持续内存增长、比例漂移或锚点累积误差。
 
-如果 Cubism 在当前环境稳定、性能和制作效率明显优于原生方案，正式角色采用 Cubism；否则使用 NativeRig。不能只凭演示视频决定生产路线。
+只有作者工具和至少一条 Godot 运行路径稳定后，才允许制作正式母版、增加姿势和大动作。Live2D、Spine 和当前崩溃的官方 Inochi2D Godot 扩展不作为隐藏依赖或临时捷径。
 
 ## 硬性避坑清单
 

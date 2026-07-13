@@ -6,6 +6,8 @@
 
 > 当前状态：`Pre-Alpha / 重置版设计与技术验证阶段`。仓库暂时没有对外安装包；只有达到“新角色已进入程序、眨眼不带动身体、基础面板完成、macOS 实机通过”后，才会发布第一个可安装版本。
 
+> 制作约束已经确认：不购买 Live2D、Spine 等付费工具，也不依赖专业绑定师。Godot 继续负责桌宠程序；角色绑定优先验证可由 Codex 直接控制的开源工具，并保留 Blender/Godot 原生路线作为回退。正式工具链只会在小样通过后锁定。
+
 <p align="center">
   <img src="docs/concepts/naya-lazy-pose-02.png" width="520" alt="小纳雅重置版慵懒坐姿概念图">
 </p>
@@ -23,6 +25,7 @@
 - 所有图层使用固定锚点、固定画布和固定比例，防止切换时跳位
 - 较大的转身和姿势变化使用独立、经过校准的姿态，而不是把正面图强行旋转或镜像
 - 角色、动画、UI、AI、记忆和电脑控制分别设计，避免继续堆进一个巨大脚本
+- 只使用免费或开源制作工具；先用最小样机验证绑定、保存重开、透明导出和 Godot 接入，再开始正式角色生产
 
 ## 已确认的产品方向
 
@@ -70,11 +73,13 @@ docs/
 ## 研究与计划
 
 - [桌宠前例与技术路线调研](docs/research/desktop-pet-precedents-2026-07.md)
+- [免费角色绑定工具链调研](docs/research/rigging-toolchain-options-2026-07.md)
 - [电脑控制能力包候选](docs/research/computer-control-runtime.md)
 - [开发与发布前提条件](docs/environment-prerequisites.md)
 - [重置版实施计划（讨论稿）](docs/implementation-plan-draft.md)
 - [已经确认的需求](docs/confirmed-requirements.md)
 - [重置版架构原则](docs/architecture-principles.md)
+- [决策 0001：免费开放角色生产管线](docs/decisions/0001-free-open-rig-pipeline.md)
 
 ## 项目说明
 
