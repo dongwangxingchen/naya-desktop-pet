@@ -1,0 +1,34 @@
+.DS_Store
+._*
+
+# Godot generated files
+.godot/
+.import/
+export_credentials.cfg
+
+# Editors
+.idea/
+.vscode/
+
+# Local configuration and credentials
+.env
+.env.*
+!.env.example
+secrets/
+local-config/
+
+# Build products are published through GitHub Releases
+build/
+dist/
+exports/
+*.app
+*.dmg
+*.pkg
+*.zip
+*.pck
+*.exe
+*.translation
+
+# Logs and temporary files
+*.log
+*.tmp
