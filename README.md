@@ -60,9 +60,21 @@ docs/
   concepts/               已确认的视觉方向稿
   confirmed-requirements.md
   architecture-principles.md
+  environment-prerequisites.md
+  implementation-plan-draft.md
+  research/               桌宠前例与技术路线调研
 ```
 
 等动画技术路线和基础界面定稿后，再加入新的 Godot 工程、自动化测试与构建脚本。
+
+## 研究与计划
+
+- [桌宠前例与技术路线调研](docs/research/desktop-pet-precedents-2026-07.md)
+- [电脑控制能力包候选](docs/research/computer-control-runtime.md)
+- [开发与发布前提条件](docs/environment-prerequisites.md)
+- [重置版实施计划（讨论稿）](docs/implementation-plan-draft.md)
+- [已经确认的需求](docs/confirmed-requirements.md)
+- [重置版架构原则](docs/architecture-principles.md)
 
 ## 项目说明
 
